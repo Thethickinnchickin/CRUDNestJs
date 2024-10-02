@@ -1,0 +1,17 @@
+server:
+  config:
+    prometheus.yml: |
+      global:
+        scrape_interval: 15s  # Default scrape interval
+
+      scrape_configs:
+        - job_name: 'nestjs-student-app'  # Name of your job
+          kubernetes_sd_configs:
+            - role: endpoints  # Use service endpoints
+          relabel_configs:
+            - source_labels: [__meta_kubernetes_service_name]
+              action: keep
+              regex: nestjs-student-app  # Name of your service
+            - source_labels: [__meta_kubernetes_namespace]
+              action: keep
+              regex: default  # Namespace where your service is deployed (default if not specified)

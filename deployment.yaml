@@ -1,0 +1,206 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nestjs-student-app
+  labels:
+    app: nestjs-student-app
+spec:
+  replicas: 3  # Number of replicas
+  selector:
+    matchLabels:
+      app: nestjs-student-app
+  template:
+    metadata:
+      labels:
+        app: nestjs-student-app
+    spec:
+      containers:
+        - name: nestjs-student-app
+          image: mattreiley68/nestjs-student-app:latest  # Ensure this image is built and available in your Docker registry
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://mongo:27017"  # Update this to point to the MongoDB service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nestjs-student-app
+spec:
+  type: NodePort  # Change to LoadBalancer if needed
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30000  # Port exposed on the node
+  selector:
+    app: nestjs-student-app
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db  # MongoDB storage path
+              name: mongo-storage
+      volumes:
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc  # Ensure this matches your PVC name
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+spec:
+  type: ClusterIP  # Default for internal communication
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongo
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nestjs-student-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nestjs-student-app
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50  # Target 50% CPU usage per pod
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s  # Default scrape interval for metrics scraping
+
+    scrape_configs:
+      - job_name: 'nestjs-student-app'  # Job name for the NestJS student application
+        kubernetes_sd_configs:
+          - role: endpoints  # Use Kubernetes service endpoints to discover targets
+        relabel_configs:
+          # Keep only the endpoints for the specific service
+          - source_labels: [__meta_kubernetes_service_name]  # Source label for service name
+            action: keep
+            regex: nestjs-student-app  # Match the name of your service
+          # Keep only the endpoints for the specified namespace
+          - source_labels: [__meta_kubernetes_namespace]  # Source label for namespace
+            action: keep
+            regex: default  # Match the namespace where your service is deployed (default if not specified)
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+            - "--web.listen-address=:9090"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/prometheus/
+            - name: data-volume
+              mountPath: /prometheus/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-config
+        - name: data-volume
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+spec:
+  ports:
+    - port: 9090
+      targetPort: 9090
+  selector:
+    app: prometheus
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest
+          ports:
+            - containerPort: 3000
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  type: NodePort  # Change from LoadBalancer to NodePort
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 32476  # This is the port you can access on your local machine
+  selector:
+    app: grafana
+
+

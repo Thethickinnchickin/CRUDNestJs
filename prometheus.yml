@@ -1,0 +1,20 @@
+# Prometheus configuration file
+
+global:
+  scrape_interval: 15s  # Default scrape interval for metrics scraping
+
+scrape_configs:
+  - job_name: 'nestjs-student-app'  # Name of the job for the NestJS student application
+    kubernetes_sd_configs:
+      - role: endpoints  # Use Kubernetes service endpoints to discover targets
+    relabel_configs:
+      # Keep only the endpoints for the specific service
+      - source_labels: [__meta_kubernetes_service_name]  # Source label for service name
+        action: keep
+        regex: nestjs-student-app  # Match the name of your service
+      # Keep only the endpoints for the specified namespace
+      - source_labels: [__meta_kubernetes_namespace]  # Source label for namespace
+        action: keep
+        regex: default  # Match the namespace where your service is deployed (default if not specified)
+
+  # Add more scrape jobs here if needed
