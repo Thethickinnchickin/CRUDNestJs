@@ -21,7 +21,7 @@ spec:
             - containerPort: 3000
           env:
             - name: MONGO_URI
-              value: "mongodb://mongo:27017"  # Update this to point to the MongoDB service
+              value: "mongodb+srv://mattreiley:TomBrady12@cluster0.p3qlo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"  # Update this to point to the MongoDB service
 
 ---
 apiVersion: v1
@@ -77,6 +77,18 @@ spec:
       targetPort: 27017
   selector:
     app: mongo
+    
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 
 ---
 apiVersion: autoscaling/v1
