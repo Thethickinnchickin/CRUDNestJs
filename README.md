@@ -1,85 +1,158 @@
-<p align="center">
-    <a href="http://nestjs.com/" target="blank">
-        <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
-    </a>
-</p>
+# Scalable Inventory Management System with NestJS and Kubernetes
 
-<p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+## Author
 
-<p align="center">
-    <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-    <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-    <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-    <a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-    <a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-    <a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-    <a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-    <a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-    <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-    <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
+Matthew Reiley
+October 3, 2024
 
-## Description
+---
 
-This project is a showcase of my technical skills in cloud-native development, built using the 
-[Nest](https://github.com/nestjs/nest) framework. It demonstrates how to set up a full-stack application with 
-Kubernetes, NestJS, MongoDB, and Docker, deployed on **IBM Cloud Kubernetes Service**. The project is designed for job applications, allowing potential employers to evaluate my expertise in containerization and cloud deployment.
+## 📋 Project Overview
 
-## Key Technologies
+This project demonstrates a **scalable inventory management system**, developed with **NestJS** and deployed with **Kubernetes** on IBM Cloud. It showcases expertise in cloud-native development, containerization, orchestration, and modern application architecture.
 
-- **NestJS**: A progressive Node.js framework for building scalable server-side applications.
-- **MongoDB**: A NoSQL database to manage application data.
-- **Docker**: Containerization platform to build and deploy consistent environments.
-- **Kubernetes**: Orchestration system to manage deployments and services.
-- **IBM Cloud Kubernetes Service**: Cloud-based Kubernetes platform for hosting the project.
-- **Nginx Ingress**: For routing HTTP traffic to the application.
+The backend is powered by NestJS, with **MongoDB** as the database, **Docker** for containerization, and **Kubernetes** for orchestration. The app supports CRUD operations for products, categories, and orders.
 
-## Kubernetes Overview
+---
 
-This project is deployed on a Kubernetes cluster hosted on IBM Cloud. The following components are used:
-- **Deployments**: The NestJS app and MongoDB run in separate pods with scalability options.
-- **Services**: Kubernetes `ClusterIP` services expose the application and database within the cluster.
-- **Ingress**: Nginx Ingress routes public traffic to the services securely.
-- **SSL/TLS**: Configured via Ingress to ensure encrypted communication.
+## 🛠 Key Technologies
 
-For a visual representation, check out the architecture diagram [here](#link-to-diagram).
+* **NestJS**: A progressive Node.js framework for building scalable server-side applications.
+* **MongoDB**: NoSQL database for flexible and efficient data storage.
+* **Docker**: Containerization technology to ensure consistent app execution.
+* **Kubernetes**: Orchestrates and scales containerized applications.
+* **IBM Cloud Kubernetes Service**: Managed Kubernetes cluster on IBM Cloud.
+* **Sanity.io**: Used for dynamic content management.
 
-## Project Setup
+---
 
-1. Install the dependencies.
-2. Compile and run the project:
-   - Development mode
-   - Watch mode
-   - Production mode
+## 🚀 Features
 
-3. Run tests:
-   - Unit tests
-   - End-to-end tests
-   - Test coverage
+✅ CRUD operations for inventory entities: **Product**, **Category**, **Order**
+✅ RESTful API with validation and error handling
+✅ MongoDB integration with Mongoose schemas
+✅ Containerized with Docker for consistent deployments
+✅ Kubernetes manifests for deployment, service, and scaling
+✅ Unit and end-to-end tests to ensure reliability
 
-## Running the Application in Kubernetes
+---
 
-To deploy the application using Kubernetes:
+## 📖 Setup Instructions
 
-1. Build the Docker image.
-2. Push the image to DockerHub.
-3. Create the Kubernetes deployment.
-4. Set up services.
-5. Apply Ingress for traffic routing.
+### Prerequisites
 
-Now your NestJS application will be accessible via the Ingress route you've defined.
+* Node.js >= 16.x
+* npm >= 8.x
+* Docker
+* kubectl
+* IBM Cloud account (or any Kubernetes cluster)
 
-## Resources
+### 1️⃣ Clone the Repository
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- Check out our [official video courses](https://www.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://nestjs.dev/tools/devtools).
-- Need help with your project? Check out our [official enterprise support](https://nestjs.com/support).
-- Follow us on [Twitter](https://twitter.com/nestframework) and [LinkedIn](https://www.linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our [official Jobs board](https://jobs.nestjs.com).
+```bash
+git clone <repository_url>
+cd inventory-management
+```
 
-## Support
+### 2️⃣ Install Dependencies
 
-Nest is an MIT-licensed open-source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please read more [here](https://opencollective.com/nest#backer).
+```bash
+npm install
+```
+
+### 3️⃣ Environment Variables
+
+Create a `.env` file in the root directory:
+
+```ini
+MONGODB_URI=mongodb+srv://<your_mongo_uri>
+PORT=3000
+```
+
+### 4️⃣ Run Locally
+
+```bash
+npm run start:dev
+```
+
+Visit `http://localhost:3000`.
+
+---
+
+## 🐳 Docker
+
+### Build the Docker Image
+
+```bash
+docker build -t inventory-management:latest .
+```
+
+### Run the Docker Container
+
+```bash
+docker run -d -p 3000:3000 --env-file .env inventory-management:latest
+```
+
+---
+
+## ☸️ Kubernetes Deployment
+
+### Apply Kubernetes Manifests
+
+```bash
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+Monitor pods and services:
+
+```bash
+kubectl get pods
+kubectl get svc
+```
+
+---
+
+## 🧪 Testing
+
+Run unit and e2e tests:
+
+```bash
+npm run test
+npm run test:e2e
+```
+
+---
+
+## 📚 API Endpoints
+
+| Method | Endpoint                        | Description          |
+| ------ | ------------------------------- | -------------------- |
+| GET    | /products                       | Get all products     |
+| POST   | /products                       | Create a new product |
+| GET    | /products/\:id                  | Get a product by ID  |
+| PUT    | /products/\:id                  | Update a product     |
+| DELETE | /products/\:id                  | Delete a product     |
+| ...    | Similar for categories & orders |                      |
+
+---
+
+## 📄 Conclusion
+
+This project demonstrates:
+
+* Building scalable, cloud-native apps
+* Containerization and orchestration using Docker & Kubernetes
+* Designing maintainable NestJS backend systems
+* Deploying and managing on IBM Cloud
+
+It highlights the importance of modern development practices and equips me with real-world experience in cloud-native architectures.
+
+---
+
+For questions or feedback, feel free to contact me!
+
+---
+
+© Matthew Reiley, 2024
+
